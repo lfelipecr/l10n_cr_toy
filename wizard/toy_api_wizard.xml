@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="stock_toy_api_wizard" model="ir.ui.view">
+            <field name="name">stock.toy.api.wizard</field>
+            <field name="model">stock.toy.api.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Webservice Toys">
+                    <sheet>
+                         <group>
+                             <group>
+                                <field name="company_id" readonly="1" invisible="1"/>
+                                <field name="option" widget="radio"/>
+                                <field name="api_id" readonly="1"/>
+                                <field name="sucursal_id"  placeholder="Seleccione sucursal"
+                                        options="{'no_create': True, 'no_open': True}"/>
+                                <field name="location_id" placeholder="Seleccione ubicacion"
+                                        options="{'no_create': True, 'no_open': True}"
+                                        attrs="{'required': [('option','not in', ('data','price_stock'))],
+                                                'invisible': [('option', 'not in', ('data'))]}"
+                                        domain="[('usage','in',('internal','transit'))]"/>
+
+                             </group>
+                             <group name="message_option">
+                                 <div attrs="{'invisible':[('option', '!=', 'data')]}" class="oe_grey" colspan="4">
+                                    Obtendrá todos los productos y sus detalles, correspondientes a
+                                    las sucursales seleccionadas. Creará si no lo encuentra en el sistema o actualizará si
+                                    se encuentra registtado.
+                                </div>
+                                 <div attrs="{'invisible':[('option', '!=', 'images')]}" class="oe_grey" colspan="4">
+                                     Solo si existen productos en el sistema, actualizará las imagenes según las url's obtenidas
+                                     en la carga inicial.
+                                </div>
+                             </group >
+                        </group>
+                        <group>
+                             <field name="description" />
+                        </group>
+                        <footer>
+                            <button name="process" string="Procesar" type="object" default_focus="1"
+                                    icon="fa-forward"
+                                    class="oe_highlight"
+                                    attrs="{'invisible': ['|',('description', '!=', False),('option', 'not in', ('data','price_stock'))]}"
+                            />
+                            <button name="list_view_products" string="Lista Productos" type="object" default_focus="1"
+                                    icon="fa-forward"
+                                    class="oe_highlight"
+                                    attrs="{'invisible': [('description', '=', False)]}"
+                            />
+                            <button name="update_images" string="Actualizar imágenes" type="object" default_focus="1"
+                                    icon="fa-refresh"
+                                    class="oe_highlight"
+                                    attrs="{'invisible': ['|',('description', '!=', False),('option', '!=', 'images')]}"
+                            />
+                            <button string="Cerrar" icon="fa-times" class="oe_link" special="cancel"/>
+                        </footer>
+                    </sheet>
+
+
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_stock_toy_api_wizard" model="ir.actions.act_window">
+            <field name="name">Webservice Toys</field>
+            <field name="res_model">stock.toy.api.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+            id="menu_stock_toy_api_wizard"
+            name="Webservice"
+            parent="l10n_cr_toy.menu_toys_item"
+            sequence="2"
+            action="action_stock_toy_api_wizard"/>
+
+    </data>
+</odoo>

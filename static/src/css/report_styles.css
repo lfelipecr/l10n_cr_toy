@@ -1,0 +1,23 @@
+.table-data {
+    width: 100%;
+}
+
+.table-data th, td {
+    border-bottom: 2px solid grey;
+    padding: 10px;
+    vertical-align: center;
+}
+
+.table-data th {
+    background-color: #5B4E80;
+    color: #C9B5FF;
+}
+
+.table-data .center {
+    text-align: center;
+}
+
+.table-data .number {
+    text-align: right;
+    font-family: monospace, Monospaced;
+}

@@ -1,0 +1,90 @@
+<odoo>
+    <data>
+         <record id="api_params_form" model="ir.ui.view">
+            <field name="name">api.params.form</field>
+            <field name="model">api.params</field>
+            <field name="arch" type="xml">
+                  <form string="Api | Parámetros">
+                       <sheet>
+                           <div class="oe_title">
+                                <label for="name" class="oe_edit_only"/>
+                                <h1><field name="name"/></h1>
+                            </div>
+                           <group>
+                              <group>
+                                  <field name="user"/>
+                                  <field name="password"/>
+                              </group>
+                              <group>
+                                  <field name="cliente" />
+                                  <field name="url_toys" />
+                              </group>
+                          </group>
+                           <notebook>
+                               <page id="api_tab" name="api_tab" string="Errores">
+                                   <field name="api_lines" widget="section_and_note_one2many"
+                                          mode="tree,kanban">
+                                        <tree editable="bottom" string="Errores">
+                                            <field name="api_id" invisible="1"/>
+                                            <field name="code"/>
+                                            <field name="mensaje"/>
+                                        </tree>
+                                   </field>
+
+                               </page>
+                           </notebook>
+                       </sheet>
+                       <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                  </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="api_params_kanban">
+            <field name="name">api.params.kanban</field>
+            <field name="model">api.params</field>
+            <field name="arch" type="xml">
+                <kanban  delete="false">
+                <field name="id"/>
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img alt="Blacklist" src="/l10n_cr_toy/static/image/icon.png" class="o_kanban_image"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">API TOYS </strong>
+                                <div class="o_kanban_tags_section"/>
+                                <ul>
+                                    <li>PARAMETROS  TOYS</li>
+                                     <a type="open" class="o_kanban_record_title"><field name="user"/></a>
+                                     <a type="open" class="o_kanban_record_title"><field name="cliente"/></a>
+                                     <a type="open" class="o_kanban_record_title"><field name="url_toys"/></a>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+            </field>
+        </record>
+
+       <record id="action_api_params" model="ir.actions.act_window">
+            <field name="name">Parametros API</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">api.params</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="help" type="html">
+                <p></p>
+            </field>
+        </record>
+
+        <menuitem action="action_api_params" id="menu_api_params" name="Configuración API"
+            parent="base.menu_ir_property" sequence="1"/>
+
+    </data>
+</odoo>
