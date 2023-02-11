@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="view_sucursal_toys_tree" model="ir.ui.view">
-            <field name="name">stock.sucursal.toys.tree</field>
-            <field name="model">stock.sucursal.toys</field>
+        <record id="view_sucursal_sirett_tree" model="ir.ui.view">
+            <field name="name">stock.sucursal.sirett.tree</field>
+            <field name="model">stock.sucursal.sirett</field>
             <field name="arch" type="xml">
-                <tree string="Sucursal Toys" sample="1">
+                <tree string="Sucursal sirett" sample="1">
                     <field name="id_search"/>
                     <field name="code"/>
                     <field name="name"/>
@@ -14,11 +14,11 @@
                 </tree>
             </field>
         </record>
-        <record id="view_sucursal_toys_form" model="ir.ui.view">
-            <field name="name">stock.sucursal.toys.form</field>
-            <field name="model">stock.sucursal.toys</field>
+        <record id="view_sucursal_sirett_form" model="ir.ui.view">
+            <field name="name">stock.sucursal.sirett.form</field>
+            <field name="model">stock.sucursal.sirett</field>
             <field name="arch" type="xml">
-                  <form string="Sucursal Toys">
+                  <form string="Sucursal sirett">
                        <sheet>
                            <div class="oe_title">
                                 <label for="code" class="oe_edit_only"/>
@@ -40,21 +40,17 @@
             </field>
         </record>
 
-         <record id="action_stock_sucursal_toys" model="ir.actions.act_window">
+         <record id="action_stock_sucursal_sirett" model="ir.actions.act_window">
             <field name="name">Sucursales</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">stock.sucursal.toys</field>
+            <field name="res_model">stock.sucursal.sirett</field>
             <field name="view_mode">tree,kanban,form</field>
-            <field name="view_id" ref="view_sucursal_toys_tree"/>
+            <field name="view_id" ref="view_sucursal_sirett_tree"/>
             <field name="help" type="html">
-                <p></p>
+                <p/>
             </field>
         </record>
-
-         <menuitem action="action_stock_sucursal_toys" id="menu_sucursal_toys_api"
-            parent="menu_toys_item" sequence="1"/>
-
-
-
+         <menuitem action="action_stock_sucursal_sirett" id="menu_sucursal_sirett_api"
+            parent="menu_sirett_item" sequence="1"/>
     </data>
 </odoo>

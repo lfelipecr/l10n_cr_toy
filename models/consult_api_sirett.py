@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from datetime import datetime
-from odoo import api, models, fields, _
 import base64
-from odoo.exceptions import UserError
+from datetime import datetime
+
 import requests
 from zeep import Client
-cliente = Client("https://sistema.crgtoys.com/webservice.php?wsdl")
+
+from odoo import models
+
+cliente = Client("https://sistema.crgsirett.com/webservice.php?wsdl")
 user = '1405'
-password='7~7G@&pJpd38'
-url_toys = 'https://sistema.crgtoys.com/'
+password = '7~7G@&pJpd38'
+url_base = 'https://sistema.crgsirett.com/'
+
 errors = {
     '1':'Cuenta de Consulta no existe en el Sistema.',
     '2':'Cuenta sin Acceso al Webservice.',
@@ -32,9 +35,10 @@ errors = {
     '19':'Algunos artículos del detalle no tienen stock para reservar la mercadería.',
 }
 
-class ToysApiConsult(models.TransientModel):
-    _name = 'toys.api.consult'
-    _description = 'Toys Api - Consulta'
+
+class SirettApiConsult(models.TransientModel):
+    _name = 'sirett.api.consult'
+    _description = 'Sirett Api - Consulta'
 
     def get_result(self,id_search):
         r = cliente.service.wsp_request_bodega_all_items(user, password, id_search)
@@ -43,65 +47,58 @@ class ToysApiConsult(models.TransientModel):
         else:
             self.env.user.notify_warning(message=errors[r.result], title="UPS! ")
 
-    def new(self,data):
-
+    def new(self, data):
         product_t = self.env['product.template']
-        for product_toys in data:
-            p_odoo = product_t.search([('default_code', '=', product_toys.codigo)])
+        for product in data:
+            p_odoo = product_t.search([('default_code', '=', product.codigo)])
             data = {
-                'name': product_toys.descripcion,
-                'default_code': product_toys.codigo,
-                'stock_actual_toys': product_toys.stock or 0.0,
-                'list_price': product_toys.precio,
+                'name': product.descripcion,
+                'default_code': product.codigo,
+                'stock_actual_sirett': product.stock or 0.0,
+                'list_price': product.precio,
                 'date_consult': datetime.now().date(),
-                'presentation': product_toys.presentacion,
-                'marca': product_toys.marca,
-                'familia': product_toys.familia,
-                'url_image': url_toys + '' + product_toys.image_url if product_toys.image_url else product_toys.image_url,
+                'presentation': product.presentacion,
+                'marca': product.marca,
+                'familia': product.familia,
+                'url_image': url_base + '' + product.image_url if product.image_url else product.image_url,
                 #'sucursal_id': sucursal.id
             }
-
             if p_odoo:
                 p_odoo.write(data)
             else:
                 product_t.create(data)
 
     def api_consult_by_sucursal(self, sucursal_id, product_id, type):
-
         product_t = self.env['product.template']
-
         for sucursal in sucursal_id:
             r = self.get_result(str(sucursal.id_search))
             data = r.data
-
             sucursal_id.write({'date_consult': datetime.now().date(), 'total_consult': len(r.data)})
-
             if product_id and (type=='image' or type=='stock'):
-                product_toys = list(filter(lambda x: x.codigo == product_id.default_code, data))[0]
-                #product_toys = data.filtered(lambda x : x.codigo==product_id.default_code)
-                if product_toys:
+                product = list(filter(lambda x: x.codigo == product_id.default_code, data))[0]
+                if product:
                     img_b64 = False
-                    if product_toys.image_url != None:
-                        response_image = requests.get(url_toys+''+product_toys.image_url)
+                    if product.image_url != None:
+                        response_image = requests.get(url_base + '' + product.image_url)
                         if response_image:
                             img_bytes = response_image.content
                             img_b64 = base64.b64encode(img_bytes)
 
                     if img_b64:
                         image_1920 = img_b64
-                        url_image = url_toys + '' + product_toys.image_url
+                        url_image = url_base + '' + product.image_url
                     else:
                         image_1920 = None
                         url_image = None
                     data = {
-                        'name': product_toys.descripcion,
-                        'default_code': product_toys.codigo,
-                        'stock_actual_toys': product_toys.stock or 0.0,
-                        'list_price': product_toys.precio,
+                        'name': product.descripcion,
+                        'default_code': product.codigo,
+                        'stock_actual_sirett': product.stock or 0.0,
+                        'list_price': product.precio,
                         'date_consult': datetime.now().date(),
-                        'presentation': product_toys.presentacion,
-                        'marca': product_toys.marca,
-                        'familia': product_toys.familia,
+                        'presentation': product.presentacion,
+                        'marca': product.marca,
+                        'familia': product.familia,
                         'url_image': url_image,
                         'sucursal_id': sucursal.id,
                         'image_1920': image_1920,
@@ -116,18 +113,18 @@ class ToysApiConsult(models.TransientModel):
 
             else:
 
-                for product_toys in data:
-                    p_odoo = product_t.search([('default_code', '=', product_toys.codigo)])
+                for product in data:
+                    p_odoo = product_t.search([('default_code', '=', product.codigo)])
                     data = {
-                        'name': product_toys.descripcion,
-                        'default_code': product_toys.codigo,
-                        'stock_actual_toys': product_toys.stock or 0.0,
-                        'list_price': product_toys.precio,
+                        'name': product.descripcion,
+                        'default_code': product.codigo,
+                        'stock_actual_sirett': product.stock or 0.0,
+                        'list_price': product.precio,
                         'date_consult': datetime.now().date(),
-                        'presentation': product_toys.presentacion,
-                        'marca': product_toys.marca,
-                        'familia': product_toys.familia,
-                        'url_image': url_toys + '' + product_toys.image_url if product_toys.image_url else product_toys.image_url,
+                        'presentation': product.presentacion,
+                        'marca': product.marca,
+                        'familia': product.familia,
+                        'url_image': url_base + '' + product.image_url if product.image_url else product.image_url,
                         'sucursal_id': sucursal.id
                     }
 

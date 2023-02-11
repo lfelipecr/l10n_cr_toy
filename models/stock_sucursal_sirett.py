@@ -3,10 +3,10 @@
 from odoo import models, fields, api
 
 
-class StockSucursalToys(models.Model):
-    _name = 'stock.sucursal.toys'
+class StockSucursalsirett(models.Model):
+    _name = 'stock.sucursal.sirett'
     _inherit = 'mail.thread'
-    _description = 'Sucursal Toys Api'
+    _description = 'Sucursal sirett Api'
     _rec_name = 'name'
     _order = "id_search asc"
 
@@ -17,13 +17,9 @@ class StockSucursalToys(models.Model):
     active = fields.Boolean(string="Activo", default=True)
     total_consult = fields.Float(string=u'Número de registros', store=True, readonly=True)
 
-
-
     def name_get(self):
         result = []
-        for sucursal_toy in self:
-            name = "%s | %s" % (sucursal_toy.code, sucursal_toy.name)
-            result.append((sucursal_toy.id, name))
+        for sucursal_sirett in self:
+            name = "%s | %s" % (sucursal_sirett.code, sucursal_sirett.name)
+            result.append((sucursal_sirett.id, name))
         return result
-
-

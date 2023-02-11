@@ -1,6 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_stock_sucursal_toys,stock.sucursal.toys,model_stock_sucursal_toys,base.group_user,1,1,1,1
-access_stock_toy_api_wizard,access.stock.toy.api.wizard,model_stock_toy_api_wizard,base.group_user,1,1,1,1
+access_stock_sucursal_sirett,stock.sucursal.sirett,model_stock_sucursal_sirett,base.group_user,1,1,1,1
+access_stock_sirett_api_wizard,access.stock.sirett.api.wizard,model_stock_sirett_api_wizard,base.group_user,1,1,1,1
 access_api_params,access.api.params,model_api_params,base.group_user,1,1,1,1
 access_api_params_lines,access.api.params.lines,model_api_params_lines,base.group_user,1,1,1,1
-
+access_api_webservice,access_api_webservice,model_api_webservice,base.group_user,1,0,0,0

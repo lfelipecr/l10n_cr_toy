@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-   <menuitem id="menu_toys_api_config" name="Toys API" parent="stock.menu_stock_config_settings" sequence="1"/>
-
+   <menuitem id="menu_sirett_api_config" name="sirett API" parent="stock.menu_stock_config_settings" sequence="1"/>
 </odoo>

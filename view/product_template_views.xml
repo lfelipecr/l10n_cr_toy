@@ -1,34 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="product_template_toys_form_view" model="ir.ui.view">
+    <record id="product_template_sirett_form_view" model="ir.ui.view">
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
             <field name="default_code" position="after">
-<!--                <label for="stock_actual_toys"/>-->
-<!--                <div>-->
-<!--                    <field name="stock_actual_toys" class="mb-0"/>-->
-<!--                    <button name="consult_stock_toys" string="Obtener último stock" type="object" icon="fa-arrow-right"-->
-<!--                         class="btn btn-link pt-0" context="{'default_product_tmpl_id': id}"/>-->
-<!--                </div>-->
                 <field name="presentation"/>
                 <field name="marca"/>
                 <field name="familia"/>
             </field>
 
             <xpath expr="//div[@name='standard_price_uom']" position="after">
-                <field name="stock_actual_toys"/>
+                <field name="stock_actual_sirett"/>
                 <label for="url_image"/>
                 <div>
                     <field name="url_image" class="mb-0"/>
-                    <button name="update_image_toy" string="Actualizar imágen" type="object" icon="fa-arrow-right"
+                    <button name="update_image_sirett" string="Actualizar imágen" type="object" icon="fa-arrow-right"
                          class="btn btn-link pt-0" context="{'default_product_tmpl_id': id}"/>
                 </div>
                 <field name="sucursal_id" readonly="1"/>
                 <field name="locacion_id" domain="[('usage','in',('internal','transit'))]"  readonly="1"/>
                 <field name="date_consult"/>
             </xpath>
-
         </field>
     </record>
 </odoo>

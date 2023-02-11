@@ -17,7 +17,7 @@
                               </group>
                               <group>
                                   <field name="cliente" />
-                                  <field name="url_toys" />
+                                  <field name="url_base" />
                               </group>
                           </group>
                            <notebook>
@@ -56,13 +56,13 @@
                                 <img alt="Blacklist" src="/l10n_cr_toy/static/image/icon.png" class="o_kanban_image"/>
                             </div>
                             <div class="oe_kanban_details">
-                                <strong class="o_kanban_record_title">API TOYS </strong>
+                                <strong class="o_kanban_record_title">API sirett </strong>
                                 <div class="o_kanban_tags_section"/>
                                 <ul>
-                                    <li>PARAMETROS  TOYS</li>
+                                    <li>PARAMETROS  sirett</li>
                                      <a type="open" class="o_kanban_record_title"><field name="user"/></a>
                                      <a type="open" class="o_kanban_record_title"><field name="cliente"/></a>
-                                     <a type="open" class="o_kanban_record_title"><field name="url_toys"/></a>
+                                     <a type="open" class="o_kanban_record_title"><field name="url_base"/></a>
 
                                 </ul>
                             </div>

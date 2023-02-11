@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="stock_toy_api_wizard" model="ir.ui.view">
-            <field name="name">stock.toy.api.wizard</field>
-            <field name="model">stock.toy.api.wizard</field>
+        <record id="stock_sirett_api_wizard" model="ir.ui.view">
+            <field name="name">stock.sirett.api.wizard</field>
+            <field name="model">stock.sirett.api.wizard</field>
             <field name="arch" type="xml">
-                <form string="Webservice Toys">
+                <form string="Webservice sirett">
                     <sheet>
                          <group>
                              <group>
@@ -55,26 +55,23 @@
                             <button string="Cerrar" icon="fa-times" class="oe_link" special="cancel"/>
                         </footer>
                     </sheet>
-
-
-
                 </form>
             </field>
         </record>
 
-        <record id="action_stock_toy_api_wizard" model="ir.actions.act_window">
-            <field name="name">Webservice Toys</field>
-            <field name="res_model">stock.toy.api.wizard</field>
+        <record id="action_stock_sirett_api_wizard" model="ir.actions.act_window">
+            <field name="name">Webservice sirett</field>
+            <field name="res_model">stock.sirett.api.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
 
         <menuitem
-            id="menu_stock_toy_api_wizard"
+            id="menu_stock_sirett_api_wizard"
             name="Webservice"
-            parent="l10n_cr_toy.menu_toys_item"
+            parent="l10n_cr_toy.menu_sirett_item"
             sequence="2"
-            action="action_stock_toy_api_wizard"/>
+            action="action_stock_sirett_api_wizard"/>
 
     </data>
 </odoo>

@@ -1,2 +1,2 @@
-id,"name","user","password","cliente","url_toys"
-1,"Api Toys","1405","7~7G@&pJpd38","https://sistema.crgtoys.com/webservice.php?wsdl","https://sistema.crgtoys.com/"
+"id","name","user","password","cliente","url_base"
+1,Api sirett,admin,admin,https://www.zephysoft.com/webservice.php?wsdl,https://www.zephysoft.com/
