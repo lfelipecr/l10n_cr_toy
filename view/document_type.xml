@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="l10n_latam_document_type_sirett_form_inherit" model="ir.ui.view">
+            <field name="name">l10n_latam.document.type Sirett</field>
+            <field name="model">l10n_latam.document.type</field>
+            <field name="inherit_id" ref="l10n_latam_invoice_document.view_document_type_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='code']" position="after">
+                    <field name="code_sirett"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

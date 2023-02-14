@@ -8,10 +8,57 @@ from zeep import Client
 
 from odoo import models
 
-cliente = Client("https://sistema.crgsirett.com/webservice.php?wsdl")
-user = '1405'
-password = '7~7G@&pJpd38'
+# cliente = Client("https://sistema.crgsirett.com/webservice.php?wsdl")
+user = '6'
+password = 'Pruebas1234*.'
 url_base = 'https://sistema.crgsirett.com/'
+
+url = 'https://www.zephysoft.com/webservice.php?wsdl'
+headers = {'Content-Type': 'text/xml; charset=utf-8'}
+
+basic_data = """
+<ws_pid>{}</ws_pid>
+      <ws_passwd>{}</ws_passwd>
+      <bid>{}</bid>
+      <ws_orden_id>{}</ws_orden_id>
+"""
+
+order_items = """
+        <ordenitems_Row>
+          <codigo>{}</codigo>
+          <cantidad>{}</cantidad>
+          <precio>{}</precio>
+        </ordenitems_Row>
+"""
+
+order_client = """
+<cliente xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns0:clientes_Row">
+        <idtipo>{}</idtipo>
+        <identificacion>{}</identificacion>
+        <nombre>{}</nombre>
+        <email>{}</email>
+        <phone>{}</phone>
+        <fe_email></fe_email>
+        <provincia>{}</provincia>
+        <ciudad>{}</ciudad>
+        <distrito>{}</distrito>
+        <direccion>{}</direccion>
+</cliente>
+"""
+
+body = """
+<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap-env:Body>
+    <ns0:wsp_send_orden xmlns:ns0="urn:server">
+      {}
+      {}
+      <detalle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns0:ordenitems_Table"  arrayType="tns:ordenitems_Row[{}]">
+        {}  
+      </detalle>
+    </ns0:wsp_send_orden>
+  </soap-env:Body>
+</soap-env:Envelope>
+"""
 
 errors = {
     '1':'Cuenta de Consulta no existe en el Sistema.',
@@ -47,7 +94,7 @@ class SirettApiConsult(models.TransientModel):
         else:
             self.env.user.notify_warning(message=errors[r.result], title="UPS! ")
 
-    def new(self, data):
+    def _new(self, data):
         product_t = self.env['product.template']
         for product in data:
             p_odoo = product_t.search([('default_code', '=', product.codigo)])
@@ -134,9 +181,3 @@ class SirettApiConsult(models.TransientModel):
                         product_t.create(data)
 
                 return True
-
-
-
-
-
-

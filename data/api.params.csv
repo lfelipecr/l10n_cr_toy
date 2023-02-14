@@ -1,2 +1,2 @@
-"id","name","user","password","cliente","url_base"
-1,Api sirett,admin,admin,https://www.zephysoft.com/webservice.php?wsdl,https://www.zephysoft.com/
+id,name,user,password,cliente,url_base
+api_1,Api sirett,6,Pruebas1234*.,https://www.zephysoft.com/webservice.php?wsdl,https://www.zephysoft.com/

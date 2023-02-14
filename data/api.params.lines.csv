@@ -1,20 +1,20 @@
-"id","api_id:id","code","mensaje"
-1,1,1,Cuenta de Consulta no existe en el Sistema.
-2,1,2,Cuenta sin Acceso al Webservice.
-3,1,3,Contraseña incorrecta.
-4,1,4,No tiene permiso para utilizar la consulta.
-5,1,5,Plataforma SiReTT no tiene la licencia habilitada.
-6,1,6,Artículo no encontrado (aplica para consultas específicas de un producto).
-7,1,7,No se recibió el número de orden (ws_orden_id)
-8,1,8,Orden ya fue procesada en el Sistema SiReTT.
-9,1,9,No se ha encontrado la Bodega indicada en el sistema o no tienes permiso para realizar ordenes en la misma.
-10,1,10,Faltan datos estrictos del cliente (nombre o email o teléfono)
-11,1,11,Datos incorrectos recibidos en el Tipo y Número de Cédula/Identificación del cliente (de acuerdo al Ministerio de Hacienda)
-12,1,12,Formato inválido en direcciones de Correo.
-13,1,13,No hay contenido para procesar la Orden.
-14,1,14,No se definió correctamente el detalle de la línea de artículo para la orden.
-15,1,15,Artículo no encontrado en el sistema (para ordenes y pre-ventas)
-16,1,16,Cantidad no válida de acuerdo a la configuración del artículo.
-17,1,17,Errores detectados en líneas de detalle recibidas para la orden.
-18,1,18,No hay stock en la línea de detalle para reservar la mercadería.
-19,1,19,Algunos artículos del detalle no tienen stock para reservar la mercadería.
+id,api_id:id,code,mensaje
+1,l10n_cr_toy.api_1,1,Cuenta de Consulta no existe en el Sistema.
+2,l10n_cr_toy.api_1,2,Cuenta sin Acceso al Webservice.
+3,l10n_cr_toy.api_1,3,Contraseña incorrecta.
+4,l10n_cr_toy.api_1,4,No tiene permiso para utilizar la consulta.
+5,l10n_cr_toy.api_1,5,Plataforma SiReTT no tiene la licencia habilitada.
+6,l10n_cr_toy.api_1,6,Artículo no encontrado (aplica para consultas específicas de un producto).
+7,l10n_cr_toy.api_1,7,No se recibió el número de orden (ws_orden_id)
+8,l10n_cr_toy.api_1,8,Orden ya fue procesada en el Sistema SiReTT.
+9,l10n_cr_toy.api_1,9,No se ha encontrado la Bodega indicada en el sistema o no tienes permiso para realizar ordenes en la misma.
+10,l10n_cr_toy.api_1,10,Faltan datos estrictos del cliente (nombre o email o teléfono)
+11,l10n_cr_toy.api_1,11,Datos incorrectos recibidos en el Tipo y Número de Cédula/Identificación del cliente (de acuerdo al Ministerio de Hacienda)
+12,l10n_cr_toy.api_1,12,Formato inválido en direcciones de Correo.
+13,l10n_cr_toy.api_1,13,No hay contenido para procesar la Orden.
+14,l10n_cr_toy.api_1,14,No se definió correctamente el detalle de la línea de artículo para la orden.
+15,l10n_cr_toy.api_1,15,Artículo no encontrado en el sistema (para ordenes y pre-ventas)
+16,l10n_cr_toy.api_1,16,Cantidad no válida de acuerdo a la configuración del artículo.
+17,l10n_cr_toy.api_1,17,Errores detectados en líneas de detalle recibidas para la orden.
+18,l10n_cr_toy.api_1,18,No hay stock en la línea de detalle para reservar la mercadería.
+19,l10n_cr_toy.api_1,19,Algunos artículos del detalle no tienen stock para reservar la mercadería.

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+
+		<!--Costa Rica-->
+		<record id="place2pay.country_documents_types_crcpf" model="l10n_latam.document.type">
+            <field name="code_sirett">1</field>
+		</record>
+		<record id="place2pay.country_documents_types_cpj" model="l10n_latam.document.type">
+			<field name="code_sirett">3</field>
+		</record>
+		<record id="place2pay.country_documents_types_dimex" model="l10n_latam.document.type">
+			<field name="code_sirett">4</field>
+		</record>
+		<record id="place2pay.country_documents_types_didi" model="l10n_latam.document.type">
+			<field name="code_sirett">4</field>
+		</record>
+	</data>
+</odoo>

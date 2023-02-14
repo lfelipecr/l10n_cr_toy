@@ -16,6 +16,8 @@ class StockSucursalsirett(models.Model):
     date_consult = fields.Date(string='Última fecha de consulta', store=True, readonly=True)
     active = fields.Boolean(string="Activo", default=True)
     total_consult = fields.Float(string=u'Número de registros', store=True, readonly=True)
+    # warehouse_id = fields.Many2one('Bodega')
+    warehouse_id = fields.Many2one('stock.warehouse', 'Bodega Odoo')
 
     def name_get(self):
         result = []
