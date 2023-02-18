@@ -169,12 +169,17 @@ class ApiWebservice(models.TransientModel):
         return result
 
     def get_img(self,product):
-        response_image = requests.get(product.url_image)
-        if response_image.status_code==200:
+        if product.url_image.split('.com')[1][0] != '/':
+            url_split = product.url_image.split('.com')
+            url = url_split[0] + '.com/' + url_split[1]
+        else:
+            url = product.url_image
+        response_image = requests.get(url)
+        if response_image.status_code == 200:
             img_bytes = response_image.content
             img_b64 = base64.b64encode(img_bytes)
             if img_b64:
-                   return img_b64
+                return img_b64
             else:
                 return False
         else:
@@ -220,7 +225,7 @@ class ApiWebservice(models.TransientModel):
         direccion = order_id.partner_id.street or ''
         direccion += order_id.partner_id.street2 or ''
         return order_client.format(
-            partner_id.p2p_document_type.code_sirett,
+            partner_id.identification_id.code_sirett,
             partner_id.vat,
             partner_id.name,
             partner_id.email,

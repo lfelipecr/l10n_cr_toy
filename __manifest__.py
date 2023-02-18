@@ -15,8 +15,7 @@
         'stock',
         'sale',
         'web_notify',
-        'l10n_latam_invoice_document',
-        'place2pay'
+        'l10n_cr_identification_type',
     ],
     'data': [
         'security/ir.model.access.csv',
