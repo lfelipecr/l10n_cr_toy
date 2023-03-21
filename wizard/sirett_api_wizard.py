@@ -9,7 +9,7 @@ from odoo.exceptions import ValidationError
 import requests
 import threading
 
-OPTIONS = [('data', 'Obtener productos'), ('images', 'Actualizar imágenes'), ('price_stock', 'Actualizar precio y stock')]
+OPTIONS = [('data', 'Obtener/Actualizar productos'), ('images', 'Actualizar imágenes'), ('price_stock', 'Actualizar precio y stock')]
 result = 6450
 
 _logger = logging.getLogger(__name__)
