@@ -34,33 +34,21 @@ class ApiWebservice(models.TransientModel):
 
     @staticmethod
     def _prepare_product_data(product):
+        ret_product = {
+                'name': product.descripcion,
+                'default_code': product.codigo,
+                'stock_actual_sirett': product.stock or 0.0,
+                'list_price': product.precio,
+                'date_consult': datetime.now().date(),
+                'presentation': product.presentacion,
+                'marca': product.marca,
+                'familia': product.familia,
+                'type': 'product',
+            }
         existe_barcode = self.env["product.template"].search([('barcode', '=', product.codigo)])
         if len(existe_barcode) > 0:
-            return {
-                'name': product.descripcion,
-                'default_code': product.codigo,
-                #'barcode': product.codigo,
-                'stock_actual_sirett': product.stock or 0.0,
-                'list_price': product.precio,
-                'date_consult': datetime.now().date(),
-                'presentation': product.presentacion,
-                'marca': product.marca,
-                'familia': product.familia,
-                'type': 'product',
-            }
-        else:
-            return {
-                'name': product.descripcion,
-                'default_code': product.codigo,
-                'barcode': product.codigo,
-                'stock_actual_sirett': product.stock or 0.0,
-                'list_price': product.precio,
-                'date_consult': datetime.now().date(),
-                'presentation': product.presentacion,
-                'marca': product.marca,
-                'familia': product.familia,
-                'type': 'product',
-            }
+            ret_product['barcode'] = product.codigo
+        return ret_product
 
     def _new(self, datos, api_id, sucursal, location_id):
         product_t = self.env['product.template']
