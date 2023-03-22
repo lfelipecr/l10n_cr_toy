@@ -32,7 +32,7 @@ class ApiWebservice(models.TransientModel):
         cliente.create_message(cliente.service, 'wsp_request_bodega_all_items', api_id.user, api_id.password, id_search)
         return r
 
-    @staticmethod
+    #@staticmethod
     def _prepare_product_data(self, product):
         ret_product = {
                 'name': product.descripcion,
