@@ -33,7 +33,7 @@ class ApiWebservice(models.TransientModel):
         return r
 
     @staticmethod
-    def _prepare_product_data(product):
+    def _prepare_product_data(self, product):
         ret_product = {
                 'name': product.descripcion,
                 'default_code': product.codigo,
