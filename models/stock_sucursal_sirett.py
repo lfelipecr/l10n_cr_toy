@@ -18,6 +18,7 @@ class StockSucursalsirett(models.Model):
     total_consult = fields.Float(string=u'Número de registros', store=True, readonly=True)
     # warehouse_id = fields.Many2one('Bodega')
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega Odoo')
+    location_id = fields.Many2one('stock.location', related="warehouse_id.lot_stock_id", string=u'Ubicación')
 
     def name_get(self):
         result = []

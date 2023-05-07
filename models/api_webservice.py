@@ -7,6 +7,7 @@ from lxml import etree
 from pytz import timezone
 from zeep import Client
 
+from datetime import date
 from odoo import models, fields
 from odoo.exceptions import ValidationError
 from .consult_api_sirett import basic_data
@@ -16,7 +17,6 @@ from .consult_api_sirett import order_items
 from .zirett_message import zirett_message as MESSAGE
 
 zone = timezone('America/Lima')
-
 
 class ApiWebservice(models.TransientModel):
     _name = 'api.webservice'
@@ -28,9 +28,9 @@ class ApiWebservice(models.TransientModel):
     def get_result(id_search, api_id):
         cliente = Client(api_id.cliente)
         print('api_id.cliente:{} - api_id.user:{} - api_id.password:{} - id_search:{}'.format(api_id.cliente, api_id.user, api_id.password, id_search))
-        r = cliente.service.wsp_request_bodega_all_items(api_id.user, api_id.password, id_search)
+        resultado = cliente.service.wsp_request_bodega_all_items(api_id.user, api_id.password, id_search)
         cliente.create_message(cliente.service, 'wsp_request_bodega_all_items', api_id.user, api_id.password, id_search)
-        return r
+        return resultado
 
     #@staticmethod
     def _prepare_product_data(self, product):
@@ -50,7 +50,7 @@ class ApiWebservice(models.TransientModel):
             ret_product['barcode'] = product.codigo
         return ret_product
 
-    def _new(self, datos, api_id, sucursal, location_id):
+    def _new(self, datos, api_id, sucursal, location_id, stock_inventory_id):
         product_t = self.env['product.template']
         info = []
         update = 0
@@ -60,7 +60,7 @@ class ApiWebservice(models.TransientModel):
             if product_template:
                 product_template.write({'locacion_id': location_id.id})
                 update += 1
-                self.create_stock_move(product_template, product.stock, location_id, sucursal)
+                self.create_stock_move(product_template, product.stock, location_id, sucursal, stock_inventory_id)
                 continue
             data = self._prepare_product_data(product)
             # additionals
@@ -73,7 +73,7 @@ class ApiWebservice(models.TransientModel):
         num_lotes, all_p = self.procedure_lotes(info, update)
         if len(all_p) > 0:
             for p in all_p[0]:
-                self.create_stock_move(p, p.stock_actual_sirett, location_id, sucursal)
+                self.create_stock_move(p, p.stock_actual_sirett, location_id, sucursal, stock_inventory_id)
 
         actualizaciones = update
         nuevos = len(info)
@@ -90,7 +90,7 @@ class ApiWebservice(models.TransientModel):
         result.append('Total: ' + str(total))
         return result
 
-    def update_pricestock(self, datos, api_id, sucursal):
+    def update_pricestock(self, datos, api_id, sucursal, stock_inventory_id):
         product_t = self.env['product.template']
         info = []
         update = 0
@@ -109,8 +109,7 @@ class ApiWebservice(models.TransientModel):
             else:
                 p_odoo.write(data)
                 update += 1
-                self.create_stock_move(p_odoo, product.stock, p_odoo.locacion_id,sucursal)
-
+                self.create_stock_move(p_odoo, product.stock, p_odoo.locacion_id,sucursal,stock_inventory_id)
 
         actualizaciones = update
         total = len(datos)
@@ -138,17 +137,32 @@ class ApiWebservice(models.TransientModel):
         return part, all_p
 
     def api_consult_by_sucursal(self, sucursal_id, api_id, product_id, type, location_id):
-        for sucursal in sucursal_id:
-            r = self.get_result(str(sucursal.id_search), api_id)
-            if r.result != 0:
-                return r.result
-            else:
-                data = r.data
-                if type == 'new':
-                    r = self._new(data, api_id, sucursal, location_id)
-                elif type == 'update_price_stock':
-                    r = self.update_pricestock(data, api_id, sucursal)
-                return r
+        stock_inventory_id = self.env['stock.inventory'].create({
+            'location_ids': [(6,0,[location_id.id])],
+            'name': 'Ajuste de inventario '+str(date.today()),
+            'accounting_date': date.today(),
+            'exhausted': True,
+            'prefill_counted_quantity': 'zero',
+        })
+
+        r = self.get_result(str(sucursal_id.id_search), api_id)
+        if r.result != 0:
+            result = r.result
+        else:
+            data = r.data
+            if type == 'new':
+                result = self._new(data, api_id, sucursal_id, location_id, stock_inventory_id)
+            elif type == 'update_price_stock':
+                result = self.update_pricestock(data, api_id, sucursal_id, stock_inventory_id)
+            
+        if len(stock_inventory_id.line_ids) > 0:    
+            stock_inventory_id.action_start()
+            stock_inventory_id.action_validate()
+        else:
+            stock_inventory_id.unlink()
+        
+        return result
+
 
     def update_images(self, product_id, sucursal_id):
         if sucursal_id:
@@ -194,26 +208,14 @@ class ApiWebservice(models.TransientModel):
         part_lote = 1000
         return initial, end, part_lote
 
-    def create_stock_move(self, product, qty, location_id, sucursal):
-        stock = self.env['stock.quant'].sudo().search([('product_id', '=', product.product_variant_id.id),('sucursal_id','=',sucursal.id)])
-        if stock:
-            for s in stock:
-                if s.location_id.id == location_id.id:
-                    s.write({'quantity': qty,
-                            'inventory_quantity': qty,
-                            'reserved_quantity': 0
-                             })
-        else:
-            quant_vals = {
+    def create_stock_move(self, product, qty, location_id, sucursal, stock_inventory_id):
+        if stock_inventory_id:
+            stock_inventory_line_id = self.env['stock.inventory.line'].create({
+                'inventory_id': stock_inventory_id.id,
                 'product_id': product.product_variant_id.id,
-                'product_uom_id': product.product_variant_id.uom_id.id,
+                'product_qty': qty,
                 'location_id': location_id.id,
-                'quantity': qty,
-                'inventory_quantity': qty,
-                'reserved_quantity': 0,
-                'sucursal_id': sucursal.id
-            }
-            self.env['stock.quant'].sudo().create(quant_vals)
+            })
 
     @staticmethod
     def _prerare_line_order_zirett(api_id, order_id):

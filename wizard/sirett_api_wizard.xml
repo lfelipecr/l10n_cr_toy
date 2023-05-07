@@ -14,10 +14,8 @@
                                 <field name="api_id" readonly="1"/>
                                 <field name="sucursal_id"  placeholder="Seleccione sucursal"
                                         options="{'no_create': True, 'no_open': True}"/>
-                                <field name="location_id" placeholder="Seleccione ubicacion"
+                                <field name="location_id" placeholder="Seleccione ubicación"
                                         options="{'no_create': True, 'no_open': True}"
-                                        attrs="{'required': [('option','not in', ('data','price_stock'))],
-                                                'invisible': [('option', 'not in', ('data'))]}"
                                         domain="[('usage','in',('internal','transit'))]"/>
 
                              </group>

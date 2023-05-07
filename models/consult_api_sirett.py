@@ -90,6 +90,7 @@ class SirettApiConsult(models.TransientModel):
     def get_result(self,id_search):
         r = cliente.service.wsp_request_bodega_all_items(user, password, id_search)
         if r.result==0:
+            print(r)
             return r
         else:
             self.env.user.notify_warning(message=errors[r.result], title="UPS! ")

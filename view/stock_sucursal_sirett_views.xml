@@ -29,6 +29,7 @@
                                   <field name="id_search"/>
                                   <field name="name"/>
                                   <field name="warehouse_id" required="True"/>
+                                  <field name="location_id" readonly="True" />
                               </group>
                               <group>
                                   <field name="date_consult"/>

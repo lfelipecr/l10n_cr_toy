@@ -21,13 +21,21 @@ class StocksirettApiWizard(models.TransientModel):
 
     def _default_api(self):
         return self.env['api.params'].sudo().browse(1)
+    
+    def _default_location_id(self):
+        return self.sucursal_id.warehouse_id.lot_stock_id.id
 
     company_id = fields.Many2one('res.company', string=u'Compañia', default=lambda self: self.env.user.company_id)
     api_id = fields.Many2one('api.params',string='Api credenciales',default=_default_api)
     sucursal_id = fields.Many2one('stock.sucursal.sirett', string=u'Sucursal', required=True)
-    location_id = fields.Many2one('stock.location', string=u'Ubicación', store=True)
+    location_id = fields.Many2one('stock.location', string=u'Ubicación', store=True, default=_default_location_id)
     description = fields.Text('Respuesta: ', store=True, readonly=True)
     option = fields.Selection(OPTIONS, string='¿Qué desea realizar?', default='data')
+
+    @api.onchange('sucursal_id')
+    def _onchange_sucursal_id(self):
+        for record in self:
+            record.location_id = record.sucursal_id.warehouse_id.lot_stock_id.id
 
     @staticmethod
     def _create_mensaje(res, sucursal, mensaje):
