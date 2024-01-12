@@ -28,8 +28,8 @@ class ApiWebservice(models.TransientModel):
     def get_result(id_search, api_id):
         cliente = Client(api_id.cliente)
         print('api_id.cliente:{} - api_id.user:{} - api_id.password:{} - id_search:{}'.format(api_id.cliente, api_id.user, api_id.password, id_search))
-        resultado = cliente.service.wsp_request_bodega_all_items(api_id.user, api_id.password, id_search)
-        cliente.create_message(cliente.service, 'wsp_request_bodega_all_items', api_id.user, api_id.password, id_search)
+        resultado = cliente.service.wsp_request_bodega_items(int(api_id.user), api_id.password, id_search)
+        cliente.create_message(cliente.service, 'wsp_request_bodega_items', api_id.user, api_id.password, id_search)
         return resultado
 
     #@staticmethod
@@ -154,13 +154,13 @@ class ApiWebservice(models.TransientModel):
                 result = self._new(data, api_id, sucursal_id, location_id, stock_inventory_id)
             elif type == 'update_price_stock':
                 result = self.update_pricestock(data, api_id, sucursal_id, stock_inventory_id)
-            
-        if len(stock_inventory_id.line_ids) > 0:    
+
+        if len(stock_inventory_id.line_ids) > 0:
             stock_inventory_id.action_start()
             stock_inventory_id.action_validate()
         else:
             stock_inventory_id.unlink()
-        
+
         return result
 
 
