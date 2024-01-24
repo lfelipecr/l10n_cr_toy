@@ -273,6 +273,7 @@ class ApiWebservice(models.TransientModel):
         order_number = re.search(r'\d+', order_id.name)
         order_number = int(order_number.group())
         credential = basic_data.format(api_id.user, api_id.password, str(warehouse_number), order_number)
+        _logger.info(f"Envio a Sirett:  Credenciales: {credential}")
         data = body.format(credential, client, len(order_id.order_line), detalle)
         headers = {'Content-Type':'text/xml; charset=utf-8'}
         response = requests.post(api_id.cliente, headers=headers, data=data)
