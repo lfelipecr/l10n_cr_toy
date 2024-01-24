@@ -167,7 +167,7 @@ class ApiWebservice(models.TransientModel):
 
     def update_images(self, product_id, sucursal_id):
         if sucursal_id:
-            products = self.env['product.template'].search([('sucursal_id', '=', sucursal_id.id), ('url_image', '!=', False),("image_1920","=",False)],limit=2000)
+            products = self.env['product.template'].search([('sucursal_id', '=', sucursal_id.id), ('url_image', '!=', False),("image_1920","=",False)],limit=100)
         else:
             products = self.env['product.template'].search([('id', '=', product_id.id), ('url_image', '!=', False)])
         initial, end, part_lote = self.params()
