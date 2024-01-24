@@ -16,6 +16,8 @@ from .consult_api_sirett import body
 from .consult_api_sirett import order_client
 from .consult_api_sirett import order_items
 from .zirett_message import zirett_message as MESSAGE
+import logging
+_logger = logging.getLogger(__name__)
 
 zone = timezone('America/Lima')
 
@@ -175,9 +177,11 @@ class ApiWebservice(models.TransientModel):
         div = t / part_lote
         part = int(div) + 1 if div > int(div) else int(div)
 
+        _logger.info(f"Actualización de imagen de {t} productos")
         for i in range(0,part):
             for product in products[initial:end]:
                 image_1920 = self.get_img(product)
+                _logger.info(f"Actualización de imagen del producto {product.name}")
                 product.image_1920 = image_1920
             initial = initial + part_lote
             end = end + part_lote
