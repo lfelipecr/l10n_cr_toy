@@ -40,16 +40,16 @@
                                     class="oe_highlight"
                                     attrs="{'invisible': ['|',('description', '!=', False),('option', 'not in', ('data','price_stock'))]}"
                             />
+                            <button name="update_images" string="Actualizar imágenes" type="object" default_focus="1"
+                                    icon="fa-refresh"
+                                    class="oe_highlight"
+                                    attrs="{'invisible': [('option', '!=', 'images')]}"
+                            />
                             <button name="list_view_products" string="Lista Productos" type="object" default_focus="1"
                                     icon="fa-forward"
                                     class="oe_highlight"
                                     attrs="{'invisible': [('description', '=', False)]}"
-                            />
-                            <button name="update_images" string="Actualizar imágenes" type="object" default_focus="1"
-                                    icon="fa-refresh"
-                                    class="oe_highlight"
-                                    attrs="{'invisible': ['|',('description', '!=', False),('option', '!=', 'images')]}"
-                            />
+                            />                            
                             <button string="Cerrar" icon="fa-times" class="oe_link" special="cancel"/>
                         </footer>
                     </sheet>
