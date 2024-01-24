@@ -270,7 +270,7 @@ class ApiWebservice(models.TransientModel):
             raise ValidationError("Es necesario indicar el almacén de la orden y que exista una sucursal relacionada a dicho almacén para poder enviar la venta a Sirett.")
         client = self._prepare_client_zirett(api_id, order_id)
         detalle = self._prerare_line_order_zirett(api_id, order_id)
-        order_number = re.search(r'\d+', self.name)
+        order_number = re.search(r'\d+', order_id.name)
         order_number = int(order_number.group())
         credential = basic_data.format(api_id.user, api_id.password, str(warehouse_number), order_number)
         data = body.format(credential, client, len(order_id.order_line), detalle)

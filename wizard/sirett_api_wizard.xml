@@ -28,6 +28,7 @@
                                  <div attrs="{'invisible':[('option', '!=', 'images')]}" class="oe_grey" colspan="4">
                                      Solo si existen productos en el sistema, actualizará las imagenes según las url's obtenidas
                                      en la carga inicial.
+                                     Este proceso se realiza en lotes de 1000 productos.
                                 </div>
                              </group >
                         </group>
