@@ -31,7 +31,7 @@ class ApiWebservice(models.TransientModel):
     def get_result(id_search, api_id):
         cliente = Client(api_id.cliente)
         print('api_id.cliente:{} - api_id.user:{} - api_id.password:{} - id_search:{}'.format(api_id.cliente, api_id.user, api_id.password, id_search))
-        resultado = cliente.service.wsp_request_bodega_items(int(api_id.user), api_id.password, id_search)
+        resultado = cliente.service.wsp_request_bodega_all_items(int(api_id.user), api_id.password, id_search)
         cliente.create_message(cliente.service, 'wsp_request_bodega_items', api_id.user, api_id.password, id_search)
         return resultado
 
