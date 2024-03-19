@@ -18,14 +18,15 @@ class ProductTemplate(models.Model):
     locacion_id = fields.Many2one('stock.location', string=u'Última ubicación obtenida', store=True)
 
 
-    # def consult_stock_sirett(self):
-    #     sirett_api_consult = self.env['sirett.api.consult']
-    #     for product in self:
-    #         sirett_api_consult.api_consult_by_sucursal(product.sucursal_id, product, 'stock')
-    #
-    #     self.env.user.notify_success(
-    #         message='Los datos del producto fueron actualizdos correctamente. ',
-    #         title="BIEN! ")
+    def consult_stock_sirett(self):
+        sirett_api_consult = self.env['api.webservice']
+        api_id = self.env['api.params'].sudo().browse(1)
+        for product in self:
+            sirett_api_consult.api_consult_by_sucursal(product.sucursal_id, api_id, product, 'new', product.location_id)
+
+        self.env.user.notify_success(
+            message='Los datos del producto fueron actualizdos correctamente. ',
+            title="BIEN! ")
 
     def update_image_sirett(self):
         webservice = self.env['api.webservice'].sudo()

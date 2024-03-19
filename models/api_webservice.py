@@ -3,7 +3,6 @@ import base64
 from datetime import datetime
 
 import requests
-import re
 from lxml import etree
 from pytz import timezone
 from zeep import Client
@@ -16,8 +15,6 @@ from .consult_api_sirett import body
 from .consult_api_sirett import order_client
 from .consult_api_sirett import order_items
 from .zirett_message import zirett_message as MESSAGE
-import logging
-_logger = logging.getLogger(__name__)
 
 zone = timezone('America/Lima')
 
@@ -31,8 +28,8 @@ class ApiWebservice(models.TransientModel):
     def get_result(id_search, api_id):
         cliente = Client(api_id.cliente)
         print('api_id.cliente:{} - api_id.user:{} - api_id.password:{} - id_search:{}'.format(api_id.cliente, api_id.user, api_id.password, id_search))
-        resultado = cliente.service.wsp_request_bodega_all_items(int(api_id.user), api_id.password, id_search)
-        cliente.create_message(cliente.service, 'wsp_request_bodega_items', api_id.user, api_id.password, id_search)
+        resultado = cliente.service.wsp_request_bodega_all_items(api_id.user, api_id.password, id_search)
+        cliente.create_message(cliente.service, 'wsp_request_bodega_all_items', api_id.user, api_id.password, id_search)
         return resultado
 
     #@staticmethod
@@ -154,22 +151,35 @@ class ApiWebservice(models.TransientModel):
         else:
             data = r.data
             if type == 'new':
-                result = self._new(data, api_id, sucursal_id, location_id, stock_inventory_id)
+                if product_id:
+                    result = self.update_product(data, location_id, product_id, sucursal_id, stock_inventory_id)
+                else:
+                    result = self._new(data, api_id, sucursal_id, location_id, stock_inventory_id)
+
             elif type == 'update_price_stock':
                 result = self.update_pricestock(data, api_id, sucursal_id, stock_inventory_id)
-
-        if len(stock_inventory_id.line_ids) > 0:
+            
+        if len(stock_inventory_id.line_ids) > 0:    
             stock_inventory_id.action_start()
             stock_inventory_id.action_validate()
         else:
             stock_inventory_id.unlink()
-
+        
         return result
+
+    def update_product(self, datos, location_id, product_id, sucursal, stock_inventory_id):
+        update = 0
+        for product in datos:
+            if product.codigo == product_id.default_code:
+                product_id.write({'locacion_id': location_id.id})
+                update += 1
+                self.create_stock_move(product_id, product.stock, location_id, sucursal, stock_inventory_id)
+                break
 
 
     def update_images(self, product_id, sucursal_id):
         if sucursal_id:
-            products = self.env['product.template'].search([('sucursal_id', '=', sucursal_id.id), ('url_image', '!=', False),("image_1920","=",False)],limit=1000)
+            products = self.env['product.template'].search([('sucursal_id', '=', sucursal_id.id), ('url_image', '!=', False)])
         else:
             products = self.env['product.template'].search([('id', '=', product_id.id), ('url_image', '!=', False)])
         initial, end, part_lote = self.params()
@@ -177,11 +187,9 @@ class ApiWebservice(models.TransientModel):
         div = t / part_lote
         part = int(div) + 1 if div > int(div) else int(div)
 
-        _logger.info(f"Actualización de imagen de {t} productos")
         for i in range(0,part):
             for product in products[initial:end]:
                 image_1920 = self.get_img(product)
-                _logger.info(f"Actualización de imagen del producto {product.name}")
                 product.image_1920 = image_1920
             initial = initial + part_lote
             end = end + part_lote
@@ -263,17 +271,11 @@ class ApiWebservice(models.TransientModel):
 
     def _post_order(self, order_id):
         api_id = self.env['api.params'].search([], limit=1)
-        sucursal_sirett = self.env['stock.sucursal.sirett'].search([('warehouse_id', '=', order_id.warehouse_id.id),("active","=",True)],limit=1)
-        if sucursal_sirett:
-            warehouse_number = sucursal_sirett.id_search
-        else:
-            raise ValidationError("Es necesario indicar el almacén de la orden y que exista una sucursal relacionada a dicho almacén para poder enviar la venta a Sirett.")
+        sucursal_sirett = self.env['stock.sucursal.sirett'].search([('warehouse_id', '=', order_id.warehouse_id.id)])
         client = self._prepare_client_zirett(api_id, order_id)
         detalle = self._prerare_line_order_zirett(api_id, order_id)
-        order_number = re.search(r'\d+', order_id.name)
-        order_number = int(order_number.group())
-        credential = basic_data.format(api_id.user, api_id.password, str(warehouse_number), order_number)
-        _logger.info(f"Envio a Sirett:  Credenciales: {credential}")
+        print(detalle)
+        credential = basic_data.format(api_id.user, api_id.password, str(sucursal_sirett.id_search), order_id.id)
         data = body.format(credential, client, len(order_id.order_line), detalle)
         headers = {'Content-Type':'text/xml; charset=utf-8'}
         response = requests.post(api_id.cliente, headers=headers, data=data)

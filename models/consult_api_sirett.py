@@ -53,7 +53,7 @@ body = """
       {}
       {}
       <detalle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns0:ordenitems_Table"  arrayType="tns:ordenitems_Row[{}]">
-        {}
+        {}  
       </detalle>
     </ns0:wsp_send_orden>
   </soap-env:Body>
