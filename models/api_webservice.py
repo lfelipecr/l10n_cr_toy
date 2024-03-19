@@ -152,7 +152,7 @@ class ApiWebservice(models.TransientModel):
             data = r.data
             if type == 'new':
                 if product_id:
-                    result = self.update_product(data, location_id, product_id, sucursal_id, stock_inventory_id)
+                    result = self.update_product(data, location_id, product_id, sucursal_id, stock_inventory_id, api_id)
                 else:
                     result = self._new(data, api_id, sucursal_id, location_id, stock_inventory_id)
 
@@ -167,11 +167,18 @@ class ApiWebservice(models.TransientModel):
         
         return result
 
-    def update_product(self, datos, location_id, product_id, sucursal, stock_inventory_id):
+    def update_product(self, datos, location_id, product_id, sucursal, stock_inventory_id, api_id):
         update = 0
         for product in datos:
+            url_image = api_id.url_base + '' + product.image_url if product.image_url else product.image_url,
             if product.codigo == product_id.default_code:
-                product_id.write({'locacion_id': location_id.id})
+                product_id.write({
+                    'locacion_id': location_id.id,
+                    'stock_actual_sirett': product.stock or 0.0,
+                    'list_price': product.precio or 0.0,
+                    'date_consult': datetime.now().date(),
+                    "url_image": url_image
+                })
                 update += 1
                 self.create_stock_move(product_id, product.stock, location_id, sucursal, stock_inventory_id)
                 break

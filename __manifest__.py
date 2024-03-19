@@ -7,7 +7,7 @@
        2. Api a sucursales Sirett para obtener productos.
        3. Derivar stock a almacenes.
     ''',
-    'version': '14.2024.03.19.01',
+    'version': '14.2024.03.19.02',
     'author': 'Xalachi',
     'license': 'LGPL-3',
     'depends': [
