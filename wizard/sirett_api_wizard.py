@@ -94,16 +94,22 @@ class StocksirettApiWizard(models.TransientModel):
         _logger.info('RES: %s' % res)
         if r != -1:
             error = self.api_id.api_lines.filtered(lambda x: x.code == '%s' % r) #error = self.api_id.api_lines.filtered(lambda x: x.code == r.result)
-            self.env.user.notify_warning(message=error.mensaje, title="UPS! ")
+            if self._context.get("no_view_result", False):
+                _logger.info("Error: UPS! - %s"%error)            
+            else:
+                self.env.user.notify_warning(message=error.mensaje, title="UPS! ")
         else:
-            return {
-                'name': 'Webservice sirett',
-                'type': 'ir.actions.act_window',
-                'view_mode': 'form',
-                'target': 'new',
-                'res_model': 'stock.sirett.api.wizard',
-                'res_id': self.id
-            }
+            if self._context.get("no_view_result", False):
+                _logger.info('Resultado: %s'%self.description)
+            else:
+                return {
+                    'name': 'Webservice sirett',
+                    'type': 'ir.actions.act_window',
+                    'view_mode': 'form',
+                    'target': 'new',
+                    'res_model': 'stock.sirett.api.wizard',
+                    'res_id': self.id
+                }
 
     def list_view_products(self):
         kanban_id = self.env.ref('product.product_template_kanban_view').id
@@ -117,3 +123,17 @@ class StocksirettApiWizard(models.TransientModel):
             'domain': [],
             'views': [[kanban_id, "kanban"], [list_id, "tree"], [form_id, "form"]]
         }
+
+    def action_process(self,option=None, sucursal=None):
+        option = option if option and option in ['data','image','price_stock'] else 'data'
+        if option in ['data','image','price_stock']:
+            self = self.with_context(default_option=option)        
+        sucursal_id = sucursal and self.env['stock.sucursal.sirett'].search([('id','=',sucursal)]) or False
+        if not sucursal_id:
+            suc_ids = self.env['stock.sucursal.sirett'].search([])
+            sucursal_id = suc_ids and suc_ids[0] or False
+        if sucursal_id:
+            self = self.with_context(default_sucursal_id=sucursal_id.id, default_location_id=sucursal_id.warehouse_id.lot_stock_id.id)
+        if option and sucursal_id:
+            wiz_id = self.env['stock.sirett.api.wizard'].create({})
+            wiz_id.with_context(no_view_result=True).process()            

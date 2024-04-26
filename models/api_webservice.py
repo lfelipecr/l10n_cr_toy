@@ -15,6 +15,9 @@ from .consult_api_sirett import body
 from .consult_api_sirett import order_client
 from .consult_api_sirett import order_items
 from .zirett_message import zirett_message as MESSAGE
+import logging
+
+_logger = logging.getLogger(__name__)
 
 zone = timezone('America/Lima')
 
@@ -274,7 +277,10 @@ class ApiWebservice(models.TransientModel):
                 continue
             message += '\n -{}'.format(MESSAGE[mensaje.text])
         if message:
-            raise ValidationError(message)
+            if self._context.get("no_view_result", False):                
+                _logger.info(message)
+            else:                
+                raise ValidationError(message)
 
     def _post_order(self, order_id):
         api_id = self.env['api.params'].search([], limit=1)

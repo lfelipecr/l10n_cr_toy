@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+		<record id="l10n_cr_toy.api_1" model="api.params">
+            <field name="name">Api sirett</field>
+            <field name="user">6</field>
+            <field name="password">Pruebas1234*.</field>
+            <field name="cliente">https://www.zephysoft.com/webservice.php?wsdl</field>
+            <field name="url_base">https://www.zephysoft.com/</field>
+		</record>    
+
+        <record id="l10n_cr_toy.1" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">1</field>
+            <field name="mensaje">Cuenta de Consulta no existe en el Sistema.</field>
+        </record>
+
+        <record id="l10n_cr_toy.2" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">2</field>
+            <field name="mensaje">Cuenta sin Acceso al Webservice.</field>
+        </record>        
+
+        <record id="l10n_cr_toy.3" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">3</field>
+            <field name="mensaje">Contraseña incorrecta.</field>
+        </record>
+
+        <record id="l10n_cr_toy.4" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">4</field>
+            <field name="mensaje">No tiene permiso para utilizar la consulta.</field>
+        </record>        
+
+        <record id="l10n_cr_toy.5" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">5</field>
+            <field name="mensaje">Plataforma SiReTT no tiene la licencia habilitada.</field>
+        </record>        
+
+        <record id="l10n_cr_toy.6" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">6</field>
+            <field name="mensaje">Artículo no encontrado (aplica para consultas específicas de un producto).</field>
+        </record>        
+
+        <record id="l10n_cr_toy.7" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">7</field>
+            <field name="mensaje">No se recibió el número de orden (ws_orden_id)</field>
+        </record>        
+
+        <record id="l10n_cr_toy.8" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">8</field>
+            <field name="mensaje">Orden ya fue procesada en el Sistema SiReTT.</field>
+        </record>
+
+        <record id="l10n_cr_toy.9" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">9</field>
+            <field name="mensaje">No se ha encontrado la Bodega indicada en el sistema o no tienes permiso para realizar ordenes en la misma.</field>
+        </record>
+
+        <record id="l10n_cr_toy.10" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">10</field>
+            <field name="mensaje">Faltan datos estrictos del cliente (nombre o email o teléfono)</field>
+        </record>        
+
+        <record id="l10n_cr_toy.11" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">11</field>
+            <field name="mensaje">Datos incorrectos recibidos en el Tipo y Número de Cédula/Identificación del cliente (de acuerdo al Ministerio de Hacienda)</field>
+        </record>
+
+        <record id="l10n_cr_toy.12" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">12</field>
+            <field name="mensaje">Formato inválido en direcciones de Correo.</field>
+        </record>        
+
+        <record id="l10n_cr_toy.13" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">13</field>
+            <field name="mensaje">No hay contenido para procesar la Orden.</field>
+        </record>
+
+        <record id="l10n_cr_toy.14" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">14</field>
+            <field name="mensaje">No se definió correctamente el detalle de la línea de artículo para la orden.</field>
+        </record>        
+
+        <record id="l10n_cr_toy.15" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">15</field>
+            <field name="mensaje">Artículo no encontrado en el sistema (para ordenes y pre-ventas)</field>
+        </record>        
+
+        <record id="l10n_cr_toy.16" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">16</field>
+            <field name="mensaje">Cantidad no válida de acuerdo a la configuración del artículo.</field>
+        </record>        
+
+        <record id="l10n_cr_toy.17" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">17</field>
+            <field name="mensaje">Errores detectados en líneas de detalle recibidas para la orden.</field>
+        </record>        
+
+        <record id="l10n_cr_toy.18" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">18</field>
+            <field name="mensaje">No hay stock en la línea de detalle para reservar la mercadería.</field>
+        </record>
+
+        <record id="l10n_cr_toy.19" model="api.params.lines">
+            <field name="api_id" ref="l10n_cr_toy.api_1"/>
+            <field name="code">19</field>
+            <field name="mensaje">Algunos artículos del detalle no tienen stock para reservar la mercadería.</field>
+        </record>        
+    </data>
+</odoo>
+

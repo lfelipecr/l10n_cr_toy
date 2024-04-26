@@ -20,5 +20,31 @@
             <field name="code">records.consult_stock_sirett()</field>
         </record>
 
+        <record id="action_update_product_despubished" model="ir.actions.server">
+            <field name="name">Despublicar</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="binding_model_id" ref="model_product_template"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="code">records.write({'is_published':False})</field>
+        </record>        
+
+    </data>
+
+    <data noupdate="1">
+        <record forcecreate="True" id="ir_cron_scheduler_sirett_action" model="ir.cron">
+            <field name="name">Sirett: data</field>
+            <field name="model_id" ref="model_stock_sirett_api_wizard"/>
+            <field name="state">code</field>
+            <field name="code">
+model.action_process()
+            </field>
+            <field eval="True" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+        </record>    
     </data>
 </odoo>

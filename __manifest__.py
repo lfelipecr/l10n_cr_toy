@@ -27,8 +27,9 @@
         'view/sale.xml',
         'view/document_type.xml',
         'wizard/sirett_api_wizard.xml',
-        'data/api.params.csv',
-        'data/stock.sucursal.sirett.csv',
+        #'data/api.params.csv',
+        'data/api_params_data.xml',
+        #'data/stock.sucursal.sirett.csv',
         'data/api.params.lines.csv',
         'data/update_document_type.xml',
         'data/ir_actions_server.xml'
